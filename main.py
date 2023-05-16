@@ -2,7 +2,7 @@ import requests
 import base64
 
 
-res = requests.get("http://127.0.0.1:8000/cam")
+res = requests.get("http://127.0.0.1:8000/cam", verify=False)
 print(res.json())
 
 
@@ -15,5 +15,5 @@ payload = {
     "image": my_string.decode('ascii')
 }
 
-res = requests.post("http://127.0.0.1:8000/cam", json=payload)
+res = requests.post("http://127.0.0.1:8000/cam", json=payload, verify=False)
 print(res.json())
