@@ -1,19 +1,34 @@
+from time import sleep
 import requests
 import base64
+import cv2
 
+URL = "http://127.0.0.1:8000/cam"
+cam = cv2.VideoCapture(0)
+while True:
+    try:
+        ret, frame = cam.read()
 
-res = requests.get("http://127.0.0.1:8000/cam", verify=False)
-print(res.json())
+        _, im_arr = cv2.imencode('.jpg', frame)
+        im_bytes = im_arr.tobytes()
+        my_string = base64.b64encode(im_bytes)
+            
+        payload = {
+            "location": "Hall B",
+            "image": my_string.decode('ascii')
+        }
 
-
-with open("test_images/individual.jpg", "rb") as img_file:
-    my_string = base64.b64encode(img_file.read())
-    # print((my_string).decode('ascii'))
+        res = requests.post(URL, json=payload, verify=False)
+        if res.status_code == 200:
+            print(res.json()) 
+        print(res.status_code)
+        
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    except Exception as e:
+        print(e)
     
-payload = {
-    "location": "Hall B",
-    "image": my_string.decode('ascii')
-}
-
-res = requests.post("http://127.0.0.1:8000/cam", json=payload, verify=False)
-print(res.json())
+    sleep(5)
+    
+cam.release()
+cv2.destroyAllWindows()
