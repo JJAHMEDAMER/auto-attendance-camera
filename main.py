@@ -4,6 +4,14 @@ import base64
 import cv2
 
 URL = "http://127.0.0.1:8000/cam"
+# URL = "https://20.199.123.194/cam"
+
+res = requests.get(URL, verify=False)
+if res.status_code == 200:
+    print(res.json()) 
+    
+print(res.status_code)
+
 cam = cv2.VideoCapture(0)
 while True:
     try:
@@ -14,7 +22,7 @@ while True:
         my_string = base64.b64encode(im_bytes)
             
         payload = {
-            "location": "Hall B",
+            "location": "Hall A",
             "image": my_string.decode('ascii')
         }
 
@@ -28,7 +36,7 @@ while True:
     except Exception as e:
         print(e)
     
-    sleep(5)
+    sleep(1)
     
 cam.release()
 cv2.destroyAllWindows()
