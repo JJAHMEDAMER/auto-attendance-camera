@@ -3,8 +3,8 @@ import requests
 import base64
 import cv2
 
-URL = "http://127.0.0.1:8000/cam"
-# URL = "https://20.199.123.194/cam"
+# URL = "http://127.0.0.1:8000/cam"
+URL = "https://api.ahmed-amer.tech/cam"
 
 res = requests.get(URL, verify=False)
 if res.status_code == 200:
@@ -22,7 +22,7 @@ while True:
         my_string = base64.b64encode(im_bytes)
             
         payload = {
-            "location": "Hall A",
+            "location": "Hall B",
             "image": my_string.decode('ascii')
         }
 
